@@ -54,7 +54,7 @@ const getListFunc = () => {
 
 const deleteListFunc = () => {
   console.log("deleteListFunc");
-  deleteList(1).then((res) => {
+  deleteList(2).then((res) => {
     getListFunc();
   });
 };

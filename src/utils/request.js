@@ -12,7 +12,7 @@ const service = axios.create({
 // 请求拦截器
 service.interceptors.request.use(
   (config) => {
-    console.log(config + "config");
+     console.log("前端准备发送的 URL：", config.baseURL + config.url);
     // 在请求发送之前做一些处理，例如添加 token 等
     return config;
   },
