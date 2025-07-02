@@ -16,4 +16,3 @@ package-lock.json
 *.glb
 src/assets/tetris_factory.glb
 *.glb
-*.glb
