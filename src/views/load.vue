@@ -1,7 +1,11 @@
 <template>
   <div class="container">
     <div>{{ formPy }}</div>
+    <el-button @click="loginFunc">登录</el-button>
+    <el-button @click="logout">登出</el-button>
     <el-button @click="getListFunc">获取列表</el-button>
+    <el-button @click="getListFuncPage">分页查询</el-button>
+
     <el-button @click="addListFunc">增加</el-button>
     <el-button @click="updateListFunc">修改</el-button>
     <el-button @click="deleteListFunc">删除</el-button>
@@ -22,11 +26,41 @@ import {
   onDeactivated,
 } from "vue";
 const myRef = ref(null);
-const myData = reactive({ name: "Alice", age: 30 });
+const userData = reactive({
+  username: "admin",
+  password: "123456",
+});
 
-import { hello, addList, getList, deleteList, updateList } from "@/api/common";
+import {
+  hello,
+  addList,
+  getList,
+  deleteList,
+  updateList,
+  getListPage,
+  login,
+} from "@/api/common";
 
 const formPy = ref("未获取到数据");
+import { useAuthStore } from "@/store/auth";
+const authStore = useAuthStore(); // 初始化 store
+
+const loginFunc = async () => {
+  try {
+    const res = await login(userData);
+    authStore.setToken(res.access_token); // 插件会自动持久化到localStorage
+    // router.push("/dashboard"); // 跳转到仪表盘
+  } catch (error) {
+    console.error("登录失败:", error);
+  }
+};
+
+const logout = () => {
+  authStore.clearToken(); // 清除Pinia的token
+  localStorage.removeItem('token'); // 清除localStorage的token
+  console.log("登出后Token:", useAuthStore().token); // 应为null
+  // router.push('/login');
+};
 function myMethod() {
   hello().then((res) => {
     console.log(res);
@@ -48,6 +82,13 @@ const addListFunc = () => {
 const getListFunc = () => {
   console.log("getListFunc");
   getList().then((res) => {
+    console.log(res);
+  });
+};
+
+const getListFuncPage = () => {
+  // 分页查询 传入页码和每页数量
+  getListPage().then((res) => {
     console.log(res);
   });
 };
