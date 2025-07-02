@@ -14,3 +14,4 @@ dist/
 package-lock.json
 *.zip
 *.glb
+src/assets/tetris_factory.glb
